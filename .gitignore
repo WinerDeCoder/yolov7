@@ -35,6 +35,10 @@ data/images/*
 !data/images/bus.jpg
 !data/*.sh
 
+test_data/*
+
+inference/*
+
 results*.csv
 
 # Datasets -------------------------------------------------------------------------------------------------------------
