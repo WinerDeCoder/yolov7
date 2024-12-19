@@ -1,5 +1,11 @@
 # Dataset utils and dataloaders
 
+import sys
+import os
+
+# Append the project root directory to sys.path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import glob
 import logging
 import math

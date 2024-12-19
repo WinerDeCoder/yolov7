@@ -246,12 +246,16 @@ class End2End(nn.Module):
 
 def attempt_load(weights, map_location=None):
     # Loads an ensemble of models weights=[a,b,c] or a single model weights=[a] or weights=a
+    print("check state 1: ", weights)
     model = Ensemble()
     for w in weights if isinstance(weights, list) else [weights]:
+        print("check state 1.1: ", weights)
         attempt_download(w)
+        print("check state 1.2: ", weights)
         ckpt = torch.load(w, map_location=map_location)  # load
+        print("check state 1.3: ", weights)
         model.append(ckpt['ema' if ckpt.get('ema') else 'model'].float().fuse().eval())  # FP32 model
-    
+    print("check state 2: ", weights)
     # Compatibility updates
     for m in model.modules():
         if type(m) in [nn.Hardswish, nn.LeakyReLU, nn.ReLU, nn.ReLU6, nn.SiLU]:
@@ -260,7 +264,7 @@ def attempt_load(weights, map_location=None):
             m.recompute_scale_factor = None  # torch 1.11.0 compatibility
         elif type(m) is Conv:
             m._non_persistent_buffers_set = set()  # pytorch 1.6.0 compatibility
-    
+    print("check state 3: ", weights)
     if len(model) == 1:
         return model[-1]  # return model
     else:
